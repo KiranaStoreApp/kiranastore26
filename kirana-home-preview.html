@@ -16,6 +16,7 @@
       --accent: #e07a3d;
       --accent-soft: #fff1e8;
       --page: #eef2f7;
+      --grey: #f0f3f7;
     }
 
     * {
@@ -62,7 +63,7 @@
     header {
       background: var(--blue);
       color: var(--white);
-      padding: 14px 20px 18px;
+      padding: 14px 20px 16px;
     }
 
     .head-row {
@@ -102,16 +103,16 @@
 
     .back.show { display: flex; }
 
-    main { padding: 18px 16px 16px; flex: 1; overflow: auto; }
+    main { padding: 16px 16px 12px; flex: 1; overflow: auto; }
 
     .view { display: none; }
     .view.on { display: block; }
 
     h2 {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--blue-deep);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .cats {
@@ -123,38 +124,44 @@
     .cat {
       border: 1px solid var(--line);
       border-radius: 14px;
-      padding: 14px 8px 12px;
+      padding: 12px 8px 10px;
       text-align: center;
-      background: var(--white);
+      background: var(--blue-soft);
       cursor: pointer;
     }
 
-    .cat.on {
-      border-color: var(--blue);
-      background: var(--blue-soft);
-    }
+    .cat.on { border-color: var(--blue); }
 
     .cat.off {
-      opacity: 0.72;
+      opacity: 1;
       background: #f6f8fb;
       cursor: default;
     }
 
-    .icon {
-      width: 40px;
-      height: 40px;
-      margin: 0 auto 8px;
-      border-radius: 10px;
-      display: flex;
+    .mark {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 13px;
+      font-weight: 700;
       color: var(--white);
+      background: var(--blue);
+      flex-shrink: 0;
     }
 
-    .cat.on .icon { background: var(--blue); }
-    .cat.off .icon { background: #9aafc8; }
+    .mark.sm { width: 40px; height: 40px; font-size: 12px; border-radius: 10px; }
+    .mark.xs { width: 32px; height: 32px; font-size: 11px; border-radius: 8px; }
+    .mark.kr { background: var(--accent); }
+    .mark.md { background: #9aafc8; }
+    .mark.q { width: 24px; height: 24px; font-size: 11px; border-radius: 7px; }
+
+    .cat .mark { margin: 0 auto 8px; display: flex; }
+    .cat.on .mark { background: var(--blue); }
+    .cat[data-cat="kirana"] .mark { background: var(--accent); }
+    .cat.off .mark { background: #9aafc8; }
 
     .cat strong {
       display: block;
@@ -173,15 +180,22 @@
       padding: 3px 7px;
     }
 
-    .recent { margin-top: 22px; }
+    .recent { margin-top: 20px; }
 
-    .shop, .item {
+    .hint {
+      font-size: 11px;
+      color: var(--muted);
+      margin: -4px 0 10px;
+    }
+
+    .shop, .item, .group-head, .acct, .acct-row, .hero {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 12px;
       border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 12px 14px;
+      border-radius: 14px;
+      padding: 12px;
       margin-bottom: 8px;
       background: var(--white);
       cursor: pointer;
@@ -191,50 +205,84 @@
       color: inherit;
     }
 
-    .shop b, .item b { font-size: 14px; font-weight: 600; }
-    .shop small, .item small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+    .hero {
+      background: var(--blue-soft);
+      cursor: default;
+      margin-bottom: 12px;
+      justify-content: flex-start;
+    }
+
+    .acct, .hero { cursor: default; }
+
+    .shop-copy, .item-copy { flex: 1; min-width: 0; }
+    .shop b, .item b, .acct b, .hero b { font-size: 14px; font-weight: 600; }
+    .shop small, .item small, .acct small, .hero small, .group-head small {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+    }
 
     .open {
       font-size: 12px;
       font-weight: 600;
       color: var(--blue);
+      flex-shrink: 0;
     }
 
     .thumb {
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
       background: var(--blue-soft);
       border: 1px solid var(--line);
       flex-shrink: 0;
-      margin-right: 10px;
     }
 
-    .item-row { display: flex; align-items: center; }
+    .item-row { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
 
-    .find {
+    .add {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 52px;
+      height: 24px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .find-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       width: 100%;
       margin-bottom: 12px;
-      padding: 11px 14px;
+      padding: 10px 12px;
       border: 1px solid var(--line);
       border-radius: 12px;
-      background: var(--white);
+      background: var(--blue-soft);
+    }
+
+    .find {
+      flex: 1;
+      border: 0;
+      background: transparent;
       font: inherit;
-      font-size: 14px;
+      font-size: 13px;
       color: var(--ink);
     }
 
-    .find:focus {
-      outline: none;
-      border-color: var(--blue);
-    }
+    .find:focus { outline: none; }
 
     .find::-webkit-search-decoration,
     .find::-webkit-search-cancel-button {
       -webkit-appearance: none;
     }
 
-    .cat-top { margin-bottom: 14px; }
+    .cat-top { margin-bottom: 12px; }
 
     .cat-row {
       display: flex;
@@ -258,7 +306,7 @@
     }
 
     .cat-page-title {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 600;
       color: var(--blue-deep);
       margin: 0;
@@ -275,15 +323,13 @@
       display: flex;
       gap: 8px;
       overflow-x: auto;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
     }
 
     .offer-clear {
       display: none;
       position: absolute;
       right: 16px;
-      bottom: 68px;
+      bottom: 72px;
       z-index: 2;
       border: 0;
       border-radius: 999px;
@@ -298,8 +344,6 @@
     }
 
     .offer-clear.show { display: inline-flex; }
-
-    .offers::-webkit-scrollbar { display: none; }
 
     .offer {
       flex: 0 0 auto;
@@ -333,8 +377,8 @@
       display: flex;
       justify-content: space-around;
       border-top: 1px solid var(--line);
-      padding: 12px 8px 16px;
-      font-size: 12px;
+      padding: 8px 8px 10px;
+      font-size: 11px;
       color: var(--muted);
       margin-top: auto;
       background: var(--white);
@@ -346,6 +390,17 @@
       color: inherit;
       font: inherit;
       cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      min-width: 64px;
+    }
+
+    .tab-ico {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
     }
 
     .tabs .here { color: var(--accent); font-weight: 600; }
@@ -358,15 +413,15 @@
       padding: 3px 8px;
     }
 
-    .pill.prep { color: var(--accent); background: var(--accent-soft); }
+    .pill.prep,
     .pill.way { color: var(--blue); background: var(--blue-soft); }
     .pill.pickup,
-    .pill.done { color: var(--muted); background: #f0f3f7; }
+    .pill.done { color: var(--muted); background: var(--grey); }
 
     .total-box {
-      margin-top: 14px;
+      margin-top: 8px;
       border: 1px solid var(--line);
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 14px;
     }
 
@@ -380,7 +435,7 @@
     .checkout {
       width: 100%;
       border: 0;
-      border-radius: 10px;
+      border-radius: 12px;
       background: var(--accent);
       color: var(--white);
       font: inherit;
@@ -390,31 +445,15 @@
       cursor: pointer;
     }
 
-    .acct {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 10px;
+    .acct.profile {
+      background: var(--blue-soft);
+      justify-content: flex-start;
+      padding: 14px 12px;
     }
 
-    .acct b { font-size: 15px; }
-    .acct small { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
+    .acct.profile b { font-size: 18px; }
 
-    .acct-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 12px 14px;
-      margin-bottom: 8px;
-      background: var(--white);
-      font: inherit;
-      color: inherit;
-      text-align: left;
-      cursor: pointer;
-    }
+    .acct-row .open { font-size: 16px; font-weight: 500; }
 
     .shop-block { margin-bottom: 18px; }
 
@@ -428,21 +467,7 @@
 
     .group { margin-bottom: 10px; }
 
-    .group-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 12px 14px;
-      background: var(--white);
-      font: inherit;
-      color: inherit;
-      text-align: left;
-      cursor: pointer;
-    }
-
+    .group-head { margin-bottom: 0; }
     .group-head small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
 
     .group-side {
@@ -459,6 +484,7 @@
 
     .group-body { display: none; padding-top: 8px; }
     .group.open .group-body { display: block; }
+    .group-body .item { cursor: default; }
   </style>
 </head>
 <body>
@@ -478,38 +504,41 @@
         <h2>Categories</h2>
         <div class="cats">
           <button type="button" class="cat on" data-cat="food">
-            <div class="icon">F</div>
+            <span class="mark">Fd</span>
             <strong>Food</strong>
           </button>
           <button type="button" class="cat on" data-cat="kirana">
-            <div class="icon">K</div>
+            <span class="mark kr">Kr</span>
             <strong>Kirana</strong>
           </button>
           <div class="cat off">
-            <div class="icon">M</div>
+            <span class="mark md">Md</span>
             <strong>Medicines</strong>
             <div class="badge">Coming in v2</div>
           </div>
         </div>
         <div class="recent">
           <h2>Recent Shops</h2>
-          <p style="font-size:12px;color:var(--muted);margin:-6px 0 10px">Recently registered — not orders</p>
+          <p class="hint">Recently registered — not orders</p>
           <button type="button" class="shop" data-shop="ganesh">
-            <div>
+            <span class="mark kr" aria-hidden="true">Kr</span>
+            <div class="shop-copy">
               <b>Ganesh Stores</b>
               <small>Kirana · registered this week · 1.2 km</small>
             </div>
             <span class="open">Open</span>
           </button>
           <button type="button" class="shop" data-shop="ambika">
-            <div>
+            <span class="mark" aria-hidden="true">Fd</span>
+            <div class="shop-copy">
               <b>Hotel Ambika Restaurant</b>
               <small>Food · registered yesterday · 0.9 km</small>
             </div>
             <span class="open">Open</span>
           </button>
           <button type="button" class="shop" data-shop="chittibabu">
-            <div>
+            <span class="mark kr" aria-hidden="true">Kr</span>
+            <div class="shop-copy">
               <b>Chittibabu Stores</b>
               <small>Kirana · registered 3 days ago · 0.4 km</small>
             </div>
@@ -531,14 +560,17 @@
             <button type="button" class="offer" data-offer="first">₹50 off first order</button>
           </div>
         </div>
-        <input
-          type="search"
-          class="find"
-          id="item-search"
-          enterkeyhint="search"
-          placeholder="Search shops"
-          aria-label="Search shops"
-        />
+        <div class="find-wrap">
+          <span class="mark q" aria-hidden="true">Q</span>
+          <input
+            type="search"
+            class="find"
+            id="item-search"
+            enterkeyhint="search"
+            placeholder="Search shops"
+            aria-label="Search shops"
+          />
+        </div>
         <div id="cat-shops"></div>
       </section>
 
@@ -552,13 +584,15 @@
             </div>
           </div>
         </div>
+        <div class="hero" id="shop-hero"></div>
         <div id="shop-items"></div>
       </section>
 
       <section class="view" id="view-cart">
         <div class="group">
           <button type="button" class="group-head">
-            <div>
+            <span class="mark sm" aria-hidden="true">Fd</span>
+            <div class="shop-copy">
               <b>Hotel Ambika Restaurant</b>
               <small>3 items</small>
             </div>
@@ -568,21 +602,21 @@
             <div class="item">
               <div class="item-row">
                 <span class="thumb" aria-hidden="true"></span>
-                <div><b>Idli plate</b><small>Qty 1 · ₹40</small></div>
+                <div class="item-copy"><b>Idli plate</b><small>Qty 1 · ₹40</small></div>
               </div>
               <span class="open">₹40</span>
             </div>
             <div class="item">
               <div class="item-row">
                 <span class="thumb" aria-hidden="true"></span>
-                <div><b>Masala dosa</b><small>Qty 1 · ₹70</small></div>
+                <div class="item-copy"><b>Masala dosa</b><small>Qty 1 · ₹70</small></div>
               </div>
               <span class="open">₹70</span>
             </div>
             <div class="item">
               <div class="item-row">
                 <span class="thumb" aria-hidden="true"></span>
-                <div><b>Filter coffee</b><small>Qty 1 · ₹25</small></div>
+                <div class="item-copy"><b>Filter coffee</b><small>Qty 1 · ₹25</small></div>
               </div>
               <span class="open">₹25</span>
             </div>
@@ -590,7 +624,8 @@
         </div>
         <div class="group">
           <button type="button" class="group-head">
-            <div>
+            <span class="mark sm kr" aria-hidden="true">Kr</span>
+            <div class="shop-copy">
               <b>Ganesh Stores</b>
               <small>2 items</small>
             </div>
@@ -600,14 +635,14 @@
             <div class="item">
               <div class="item-row">
                 <span class="thumb" aria-hidden="true"></span>
-                <div><b>Toor dal 1 kg</b><small>Qty 1 · ₹140</small></div>
+                <div class="item-copy"><b>Toor dal 1 kg</b><small>Qty 1 · ₹140</small></div>
               </div>
               <span class="open">₹140</span>
             </div>
             <div class="item">
               <div class="item-row">
                 <span class="thumb" aria-hidden="true"></span>
-                <div><b>Sugar 1 kg</b><small>Qty 1 · ₹48</small></div>
+                <div class="item-copy"><b>Sugar 1 kg</b><small>Qty 1 · ₹48</small></div>
               </div>
               <span class="open">₹48</span>
             </div>
@@ -622,7 +657,8 @@
       <section class="view" id="view-orders">
         <div class="group">
           <button type="button" class="group-head">
-            <div>
+            <span class="mark sm" aria-hidden="true">Fd</span>
+            <div class="shop-copy">
               <b>Hotel Ambika Restaurant</b>
               <small>1 order</small>
             </div>
@@ -633,7 +669,7 @@
           </button>
           <div class="group-body">
             <div class="item">
-              <div>
+              <div class="item-copy">
                 <b>Idli plate, filter coffee</b>
                 <small>Today 7:10 PM</small>
               </div>
@@ -643,7 +679,8 @@
         </div>
         <div class="group">
           <button type="button" class="group-head">
-            <div>
+            <span class="mark sm kr" aria-hidden="true">Kr</span>
+            <div class="shop-copy">
               <b>Ganesh Stores</b>
               <small>1 order</small>
             </div>
@@ -654,7 +691,7 @@
           </button>
           <div class="group-body">
             <div class="item">
-              <div>
+              <div class="item-copy">
                 <b>Atta 5 kg, oil 1 L</b>
                 <small>Today 6:40 PM</small>
               </div>
@@ -664,7 +701,8 @@
         </div>
         <div class="group">
           <button type="button" class="group-head">
-            <div>
+            <span class="mark sm" aria-hidden="true">Fd</span>
+            <div class="shop-copy">
               <b>Sri Kanya Restaurant</b>
               <small>1 order · store pickup</small>
             </div>
@@ -672,7 +710,7 @@
           </button>
           <div class="group-body">
             <div class="item">
-              <div>
+              <div class="item-copy">
                 <b>Meals</b>
                 <small>Today 5:20 PM · store pickup</small>
               </div>
@@ -682,7 +720,8 @@
         </div>
         <div class="group">
           <button type="button" class="group-head">
-            <div>
+            <span class="mark sm kr" aria-hidden="true">Kr</span>
+            <div class="shop-copy">
               <b>Chittibabu Stores</b>
               <small>1 order</small>
             </div>
@@ -690,7 +729,7 @@
           </button>
           <div class="group-body">
             <div class="item">
-              <div>
+              <div class="item-copy">
                 <b>Rice 1 kg</b>
                 <small>Yesterday</small>
               </div>
@@ -701,31 +740,52 @@
       </section>
 
       <section class="view" id="view-account">
-        <div class="acct">
-          <b>Ramu</b>
-          <small>+91 98765 43210</small>
+        <div class="acct profile">
+          <span class="mark" aria-hidden="true">Ra</span>
+          <div class="shop-copy">
+            <b>Ramu</b>
+            <small>+91 98765 43210</small>
+          </div>
         </div>
         <h2>Saved addresses</h2>
         <div class="acct">
-          <b>Home</b>
-          <small>12-4-18, Main Road, 8–10 km zone</small>
+          <span class="mark sm" aria-hidden="true">Hm</span>
+          <div class="shop-copy">
+            <b>Home</b>
+            <small>12-4-18, Main Road, 8–10 km zone</small>
+          </div>
         </div>
         <div class="acct">
-          <b>Work</b>
-          <small>Shop lane, near bus stand</small>
+          <span class="mark sm kr" aria-hidden="true">Wk</span>
+          <div class="shop-copy">
+            <b>Work</b>
+            <small>Shop lane, near bus stand</small>
+          </div>
         </div>
         <h2>Options</h2>
-        <button type="button" class="acct-row"><span>Edit profile</span><span class="open">Open</span></button>
-        <button type="button" class="acct-row"><span>Payment methods</span><span class="open">Open</span></button>
-        <button type="button" class="acct-row"><span>Help</span><span class="open">Open</span></button>
+        <button type="button" class="acct-row">
+          <span class="mark xs" aria-hidden="true">Ed</span>
+          <span class="shop-copy">Edit profile</span>
+          <span class="open">›</span>
+        </button>
+        <button type="button" class="acct-row">
+          <span class="mark xs" aria-hidden="true">Py</span>
+          <span class="shop-copy">Payment methods</span>
+          <span class="open">›</span>
+        </button>
+        <button type="button" class="acct-row">
+          <span class="mark xs" aria-hidden="true">Hp</span>
+          <span class="shop-copy">Help</span>
+          <span class="open">›</span>
+        </button>
       </section>
     </main>
     <button type="button" class="offer-clear" id="offer-clear">Clear</button>
     <nav class="tabs" aria-label="Bottom tabs">
-      <button type="button" class="here" data-tab="home">Home</button>
-      <button type="button" data-tab="cart">Cart</button>
-      <button type="button" data-tab="orders">Orders</button>
-      <button type="button" data-tab="account">Account</button>
+      <button type="button" class="here" data-tab="home"><span class="tab-ico">Hm</span>Home</button>
+      <button type="button" data-tab="cart"><span class="tab-ico">Ct</span>Cart</button>
+      <button type="button" data-tab="orders"><span class="tab-ico">Od</span>Orders</button>
+      <button type="button" data-tab="account"><span class="tab-ico">Me</span>Account</button>
     </nav>
   </div>
   <script>
@@ -798,12 +858,19 @@
     const shopItems = document.getElementById("shop-items");
     const shopHeading = document.getElementById("shop-heading");
     const shopMeta = document.getElementById("shop-meta");
+    const shopHero = document.getElementById("shop-hero");
     const itemSearch = document.getElementById("item-search");
     const offerClear = document.getElementById("offer-clear");
     let stack = ["home"];
     let currentCat = "food";
     const activeOffers = new Set();
     const offerLabels = { hdfc: "HDFC 5%", upi: "UPI 10%", axis: "Axis 5%", first: "₹50 first" };
+
+    function shopMark(shop) {
+      return shop.type === "food"
+        ? '<span class="mark" aria-hidden="true">Fd</span>'
+        : '<span class="mark kr" aria-hidden="true">Kr</span>';
+    }
 
     function syncOfferChips() {
       document.querySelectorAll(".offer[data-offer]").forEach((el) => {
@@ -843,10 +910,10 @@
         ? list
             .map(([id, shop]) => {
               const offerText = shop.offers.map((o) => offerLabels[o]).join(" · ");
-              return `<button type="button" class="shop" data-shop="${id}"><div><b>${shop.name}</b><small>${shop.tag} · ${offerText}</small></div><span class="open">Open</span></button>`;
+              return `<button type="button" class="shop" data-shop="${id}">${shopMark(shop)}<div class="shop-copy"><b>${shop.name}</b><small>${shop.tag} · ${offerText}</small></div><span class="open">Open</span></button>`;
             })
             .join("")
-        : `<p style="font-size:13px;color:var(--muted);padding:8px 2px">No shops match that filter.</p>`;
+        : `<p class="hint" style="padding:8px 2px">No shops match that filter.</p>`;
     }
 
     function openCat(type) {
@@ -865,10 +932,11 @@
       if (stack[stack.length - 1] !== "shop") stack.push("shop");
       shopHeading.textContent = shop.name;
       shopMeta.textContent = `${shop.tag} · ${shop.items.length} items`;
+      shopHero.innerHTML = `${shopMark(shop)}<div class="shop-copy"><b>${shop.type === "food" ? "Food shop" : "Kirana shop"}</b><small>Open now · ${shop.tag}</small></div>`;
       shopItems.innerHTML = shop.items
         .map(
           (it) =>
-            `<div class="item"><div class="item-row"><span class="thumb" aria-hidden="true"></span><div><b>${it.n}</b><small>${it.p} · photo loads after text</small></div></div><span class="open">Add</span></div>`
+            `<div class="item"><div class="item-row"><span class="thumb" aria-hidden="true"></span><div class="item-copy"><b>${it.n}</b><small>${it.p} · photo loads after text</small></div></div><span class="add">Add</span></div>`
         )
         .join("");
       show("shop", "Kirana", "Nearby registered shops · 8–10 km");
