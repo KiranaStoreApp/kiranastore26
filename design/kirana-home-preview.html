@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kirana — Home preview</title>
+  <style>
+    :root {
+      --blue: #1b4f9c;
+      --blue-deep: #123a78;
+      --blue-soft: #e8f0fb;
+      --white: #ffffff;
+      --ink: #1a2744;
+      --muted: #5c6b80;
+      --line: #d7e2f0;
+      --accent: #e07a3d;
+      --accent-soft: #fff1e8;
+      --page: #eef2f7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    *::-webkit-scrollbar { display: none; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--page);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      color: var(--ink);
+    }
+
+    .phone {
+      position: relative;
+      width: 390px;
+      height: 780px;
+      display: flex;
+      flex-direction: column;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(18, 58, 120, 0.12);
+    }
+
+    .status {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 20px 4px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    header {
+      background: var(--blue);
+      color: var(--white);
+      padding: 14px 20px 18px;
+    }
+
+    .head-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    header h1 {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    header p {
+      margin-top: 4px;
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    header p:empty { display: none; }
+
+    .back {
+      display: none;
+      width: 32px;
+      height: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 8px;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: var(--white);
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .back.show { display: flex; }
+
+    main { padding: 18px 16px 16px; flex: 1; overflow: auto; }
+
+    .view { display: none; }
+    .view.on { display: block; }
+
+    h2 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--blue-deep);
+      margin-bottom: 12px;
+    }
+
+    .cats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    .cat {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 8px 12px;
+      text-align: center;
+      background: var(--white);
+      cursor: pointer;
+    }
+
+    .cat.on {
+      border-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .cat.off {
+      opacity: 0.72;
+      background: #f6f8fb;
+      cursor: default;
+    }
+
+    .icon {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto 8px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .cat.on .icon { background: var(--blue); }
+    .cat.off .icon { background: #9aafc8; }
+
+    .cat strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border-radius: 999px;
+      padding: 3px 7px;
+    }
+
+    .recent { margin-top: 22px; }
+
+    .shop, .item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      background: var(--white);
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+      font: inherit;
+      color: inherit;
+    }
+
+    .shop b, .item b { font-size: 14px; font-weight: 600; }
+    .shop small, .item small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+
+    .open {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--blue);
+    }
+
+    .thumb {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: var(--blue-soft);
+      border: 1px solid var(--line);
+      flex-shrink: 0;
+      margin-right: 10px;
+    }
+
+    .item-row { display: flex; align-items: center; }
+
+    .find {
+      width: 100%;
+      margin-bottom: 12px;
+      padding: 11px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--white);
+      font: inherit;
+      font-size: 14px;
+      color: var(--ink);
+    }
+
+    .find:focus {
+      outline: none;
+      border-color: var(--blue);
+    }
+
+    .find::-webkit-search-decoration,
+    .find::-webkit-search-cancel-button {
+      -webkit-appearance: none;
+    }
+
+    .cat-top { margin-bottom: 14px; }
+
+    .cat-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .arrow-back {
+      display: inline-block;
+      flex-shrink: 0;
+      margin: 0 0 0 -4px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      font-size: 28px;
+      line-height: 1;
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .cat-page-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--blue-deep);
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    .shop-meta {
+      margin: 3px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .offers {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .offer-clear {
+      display: none;
+      position: absolute;
+      right: 16px;
+      bottom: 68px;
+      z-index: 2;
+      border: 0;
+      border-radius: 999px;
+      background: var(--blue);
+      color: var(--white);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 16px;
+      box-shadow: 0 8px 18px rgba(18, 58, 120, 0.22);
+      cursor: pointer;
+    }
+
+    .offer-clear.show { display: inline-flex; }
+
+    .offers::-webkit-scrollbar { display: none; }
+
+    .offer {
+      flex: 0 0 auto;
+      border: 0;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--blue-deep);
+      background: var(--blue-soft);
+      border-radius: 999px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .offer.hot {
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .offer.on {
+      background: var(--blue);
+      color: var(--white);
+    }
+
+    .offer.hot.on {
+      background: var(--accent);
+      color: var(--white);
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid var(--line);
+      padding: 12px 8px 16px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: auto;
+      background: var(--white);
+    }
+
+    .tabs button {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .tabs .here { color: var(--accent); font-weight: 600; }
+
+    .pill {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 999px;
+      padding: 3px 8px;
+    }
+
+    .pill.prep { color: var(--accent); background: var(--accent-soft); }
+    .pill.way { color: var(--blue); background: var(--blue-soft); }
+    .pill.pickup,
+    .pill.done { color: var(--muted); background: #f0f3f7; }
+
+    .total-box {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .checkout {
+      width: 100%;
+      border: 0;
+      border-radius: 10px;
+      background: var(--accent);
+      color: var(--white);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 12px;
+      cursor: pointer;
+    }
+
+    .acct {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+
+    .acct b { font-size: 15px; }
+    .acct small { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
+
+    .acct-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      background: var(--white);
+      font: inherit;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .shop-block { margin-bottom: 18px; }
+
+    .subtotal {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--muted);
+      padding: 2px 2px 0;
+    }
+
+    .group { margin-bottom: 10px; }
+
+    .group-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: var(--white);
+      font: inherit;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .group-head small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+
+    .group-side {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .group.open .group-head {
+      border-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .group-body { display: none; padding-top: 8px; }
+    .group.open .group-body { display: block; }
+  </style>
+</head>
+<body>
+  <div class="phone" aria-label="Kirana home screen preview">
+    <div class="status"><span>9:41</span><span>LTE  68%</span></div>
+    <header>
+      <div class="head-row">
+        <button type="button" class="back" id="back" aria-label="Back">‹</button>
+        <div>
+          <h1 id="title">Kirana</h1>
+          <p id="sub">Nearby registered shops · 8–10 km</p>
+        </div>
+      </div>
+    </header>
+    <main>
+      <section class="view on" id="view-home">
+        <h2>Categories</h2>
+        <div class="cats">
+          <button type="button" class="cat on" data-cat="food">
+            <div class="icon">F</div>
+            <strong>Food</strong>
+          </button>
+          <button type="button" class="cat on" data-cat="kirana">
+            <div class="icon">K</div>
+            <strong>Kirana</strong>
+          </button>
+          <div class="cat off">
+            <div class="icon">M</div>
+            <strong>Medicines</strong>
+            <div class="badge">Coming in v2</div>
+          </div>
+        </div>
+        <div class="recent">
+          <h2>Recent Shops</h2>
+          <p style="font-size:12px;color:var(--muted);margin:-6px 0 10px">Recently registered — not orders</p>
+          <button type="button" class="shop" data-shop="gowda">
+            <div>
+              <b>Gowda Stores</b>
+              <small>Kirana · registered this week · 1.2 km</small>
+            </div>
+            <span class="open">Open</span>
+          </button>
+          <button type="button" class="shop" data-shop="sagar">
+            <div>
+              <b>Hotel Sagar</b>
+              <small>Food · registered yesterday · 0.9 km</small>
+            </div>
+            <span class="open">Open</span>
+          </button>
+          <button type="button" class="shop" data-shop="ramesh">
+            <div>
+              <b>Ramesh Stores</b>
+              <small>Kirana · registered 3 days ago · 0.4 km</small>
+            </div>
+            <span class="open">Open</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="view" id="view-cat">
+        <div class="cat-top">
+          <div class="cat-row">
+            <button type="button" class="arrow-back" id="cat-back" aria-label="Back">‹</button>
+            <h2 class="cat-page-title" id="cat-heading">Food registered shops</h2>
+          </div>
+          <div class="offers" id="offers" aria-label="Offers">
+            <button type="button" class="offer" data-offer="hdfc">5% off with HDFC card</button>
+            <button type="button" class="offer hot" data-offer="upi">10% cashback on UPI</button>
+            <button type="button" class="offer" data-offer="axis">5% off with Axis card</button>
+            <button type="button" class="offer" data-offer="first">₹50 off first order</button>
+          </div>
+        </div>
+        <input
+          type="search"
+          class="find"
+          id="item-search"
+          enterkeyhint="search"
+          placeholder="Search shops"
+          aria-label="Search shops"
+        />
+        <div id="cat-shops"></div>
+      </section>
+
+      <section class="view" id="view-shop">
+        <div class="cat-top">
+          <div class="cat-row">
+            <button type="button" class="arrow-back" id="shop-back" aria-label="Back">‹</button>
+            <div>
+              <h2 class="cat-page-title" id="shop-heading">Shop</h2>
+              <p class="shop-meta" id="shop-meta"></p>
+            </div>
+          </div>
+        </div>
+        <div id="shop-items"></div>
+      </section>
+
+      <section class="view" id="view-cart">
+        <div class="group">
+          <button type="button" class="group-head">
+            <div>
+              <b>Hotel Sagar</b>
+              <small>3 items</small>
+            </div>
+            <span class="open">₹135 ›</span>
+          </button>
+          <div class="group-body">
+            <div class="item">
+              <div class="item-row">
+                <span class="thumb" aria-hidden="true"></span>
+                <div><b>Idli plate</b><small>Qty 1 · ₹40</small></div>
+              </div>
+              <span class="open">₹40</span>
+            </div>
+            <div class="item">
+              <div class="item-row">
+                <span class="thumb" aria-hidden="true"></span>
+                <div><b>Masala dosa</b><small>Qty 1 · ₹70</small></div>
+              </div>
+              <span class="open">₹70</span>
+            </div>
+            <div class="item">
+              <div class="item-row">
+                <span class="thumb" aria-hidden="true"></span>
+                <div><b>Filter coffee</b><small>Qty 1 · ₹25</small></div>
+              </div>
+              <span class="open">₹25</span>
+            </div>
+          </div>
+        </div>
+        <div class="group">
+          <button type="button" class="group-head">
+            <div>
+              <b>Gowda Stores</b>
+              <small>2 items</small>
+            </div>
+            <span class="open">₹188 ›</span>
+          </button>
+          <div class="group-body">
+            <div class="item">
+              <div class="item-row">
+                <span class="thumb" aria-hidden="true"></span>
+                <div><b>Toor dal 1 kg</b><small>Qty 1 · ₹140</small></div>
+              </div>
+              <span class="open">₹140</span>
+            </div>
+            <div class="item">
+              <div class="item-row">
+                <span class="thumb" aria-hidden="true"></span>
+                <div><b>Sugar 1 kg</b><small>Qty 1 · ₹48</small></div>
+              </div>
+              <span class="open">₹48</span>
+            </div>
+          </div>
+        </div>
+        <div class="total-box">
+          <div class="total-row"><span>Item total</span><b>₹323</b></div>
+          <button type="button" class="checkout">Checkout</button>
+        </div>
+      </section>
+
+      <section class="view" id="view-orders">
+        <div class="group">
+          <button type="button" class="group-head">
+            <div>
+              <b>Hotel Sagar</b>
+              <small>1 order</small>
+            </div>
+            <span class="group-side">
+              <span class="pill way">Preparing</span>
+              <span class="open">›</span>
+            </span>
+          </button>
+          <div class="group-body">
+            <div class="item">
+              <div>
+                <b>Idli plate, filter coffee</b>
+                <small>Today 7:10 PM</small>
+              </div>
+              <span class="pill prep">Preparing</span>
+            </div>
+          </div>
+        </div>
+        <div class="group">
+          <button type="button" class="group-head">
+            <div>
+              <b>Gowda Stores</b>
+              <small>1 order</small>
+            </div>
+            <span class="group-side">
+              <span class="pill way">On the way</span>
+              <span class="open">›</span>
+            </span>
+          </button>
+          <div class="group-body">
+            <div class="item">
+              <div>
+                <b>Atta 5 kg, oil 1 L</b>
+                <small>Today 6:40 PM</small>
+              </div>
+              <span class="pill way">On the way</span>
+            </div>
+          </div>
+        </div>
+        <div class="group">
+          <button type="button" class="group-head">
+            <div>
+              <b>Annapurna Kitchen</b>
+              <small>1 order · store pickup</small>
+            </div>
+            <span class="open">›</span>
+          </button>
+          <div class="group-body">
+            <div class="item">
+              <div>
+                <b>Meals</b>
+                <small>Today 5:20 PM · store pickup</small>
+              </div>
+              <span class="pill pickup">Picked up</span>
+            </div>
+          </div>
+        </div>
+        <div class="group">
+          <button type="button" class="group-head">
+            <div>
+              <b>Ramesh Stores</b>
+              <small>1 order</small>
+            </div>
+            <span class="open">›</span>
+          </button>
+          <div class="group-body">
+            <div class="item">
+              <div>
+                <b>Rice 1 kg</b>
+                <small>Yesterday</small>
+              </div>
+              <span class="pill done">Delivered</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-account">
+        <div class="acct">
+          <b>Lakshmi</b>
+          <small>+91 98765 43210</small>
+        </div>
+        <h2>Saved addresses</h2>
+        <div class="acct">
+          <b>Home</b>
+          <small>12-4-18, Main Road, 8–10 km zone</small>
+        </div>
+        <div class="acct">
+          <b>Work</b>
+          <small>Shop lane, near bus stand</small>
+        </div>
+        <h2>Options</h2>
+        <button type="button" class="acct-row"><span>Edit profile</span><span class="open">Open</span></button>
+        <button type="button" class="acct-row"><span>Payment methods</span><span class="open">Open</span></button>
+        <button type="button" class="acct-row"><span>Help</span><span class="open">Open</span></button>
+      </section>
+    </main>
+    <button type="button" class="offer-clear" id="offer-clear">Clear</button>
+    <nav class="tabs" aria-label="Bottom tabs">
+      <button type="button" class="here" data-tab="home">Home</button>
+      <button type="button" data-tab="cart">Cart</button>
+      <button type="button" data-tab="orders">Orders</button>
+      <button type="button" data-tab="account">Account</button>
+    </nav>
+  </div>
+  <script>
+    const shops = {
+      ramesh: {
+        name: "Ramesh Stores",
+        type: "kirana",
+        tag: "Kirana · 0.4 km",
+        offers: ["hdfc", "axis"],
+        items: [
+          { n: "Atta 5 kg", p: "₹210" },
+          { n: "Rice 1 kg", p: "₹55" },
+          { n: "Oil 1 L", p: "₹140" }
+        ]
+      },
+      gowda: {
+        name: "Gowda Stores",
+        type: "kirana",
+        tag: "Kirana · 1.2 km",
+        offers: ["upi", "first"],
+        items: [
+          { n: "Toor dal 1 kg", p: "₹140" },
+          { n: "Sugar 1 kg", p: "₹48" }
+        ]
+      },
+      sagar: {
+        name: "Hotel Sagar",
+        type: "food",
+        tag: "Food · 0.9 km",
+        offers: ["hdfc", "upi"],
+        items: [
+          { n: "Idli plate", p: "₹40" },
+          { n: "Masala dosa", p: "₹70" },
+          { n: "Filter coffee", p: "₹25" }
+        ]
+      },
+      annapurna: {
+        name: "Annapurna Kitchen",
+        type: "food",
+        tag: "Food · 0.7 km",
+        offers: ["axis", "first"],
+        items: [
+          { n: "Meals", p: "₹90" },
+          { n: "Pulao", p: "₹80" }
+        ]
+      }
+    };
+
+    const title = document.getElementById("title");
+    const sub = document.getElementById("sub");
+    const back = document.getElementById("back");
+    const views = {
+      home: document.getElementById("view-home"),
+      cat: document.getElementById("view-cat"),
+      shop: document.getElementById("view-shop"),
+      cart: document.getElementById("view-cart"),
+      orders: document.getElementById("view-orders"),
+      account: document.getElementById("view-account")
+    };
+    const tabHeads = {
+      home: ["Kirana", "Nearby registered shops · 8–10 km"],
+      cat: ["Kirana", "Nearby registered shops · 8–10 km"],
+      shop: ["Kirana", "Nearby registered shops · 8–10 km"],
+      cart: ["Cart", "2 shops"],
+      orders: ["Orders", "Active and past"],
+      account: ["Account", "Your profile"]
+    };
+    const catShops = document.getElementById("cat-shops");
+    const catHeading = document.getElementById("cat-heading");
+    const shopItems = document.getElementById("shop-items");
+    const shopHeading = document.getElementById("shop-heading");
+    const shopMeta = document.getElementById("shop-meta");
+    const itemSearch = document.getElementById("item-search");
+    const offerClear = document.getElementById("offer-clear");
+    let stack = ["home"];
+    let currentCat = "food";
+    const activeOffers = new Set();
+    const offerLabels = { hdfc: "HDFC 5%", upi: "UPI 10%", axis: "Axis 5%", first: "₹50 first" };
+
+    function syncOfferChips() {
+      document.querySelectorAll(".offer[data-offer]").forEach((el) => {
+        el.classList.toggle("on", activeOffers.has(el.dataset.offer));
+      });
+      const onCat = views.cat.classList.contains("on");
+      offerClear.classList.toggle("show", onCat && activeOffers.size > 0);
+    }
+
+    function show(name, t, s) {
+      Object.values(views).forEach((v) => v.classList.remove("on"));
+      views[name].classList.add("on");
+      title.textContent = t;
+      sub.textContent = s;
+      back.classList.remove("show");
+      const tab = name === "cat" || name === "shop" ? "home" : name;
+      document.querySelectorAll(".tabs [data-tab]").forEach((el) => {
+        el.classList.toggle("here", el.dataset.tab === tab);
+      });
+      syncOfferChips();
+    }
+
+    function catTitle(type) {
+      return type === "food" ? "Food registered shops" : "Kirana registered shops";
+    }
+
+    function renderCat(type) {
+      const q = (itemSearch.value || "").trim().toLowerCase();
+      const list = Object.entries(shops).filter(([, shop]) => {
+        if (shop.type !== type) return false;
+        if (activeOffers.size && !shop.offers.some((o) => activeOffers.has(o))) return false;
+        if (!q) return true;
+        return shop.name.toLowerCase().includes(q) || shop.tag.toLowerCase().includes(q);
+      });
+      catHeading.textContent = catTitle(type);
+      catShops.innerHTML = list.length
+        ? list
+            .map(([id, shop]) => {
+              const offerText = shop.offers.map((o) => offerLabels[o]).join(" · ");
+              return `<button type="button" class="shop" data-shop="${id}"><div><b>${shop.name}</b><small>${shop.tag} · ${offerText}</small></div><span class="open">Open</span></button>`;
+            })
+            .join("")
+        : `<p style="font-size:13px;color:var(--muted);padding:8px 2px">No shops match that filter.</p>`;
+    }
+
+    function openCat(type) {
+      currentCat = type;
+      stack = ["home", "cat"];
+      itemSearch.value = "";
+      activeOffers.clear();
+      syncOfferChips();
+      renderCat(type);
+      show("cat", "Kirana", "Nearby registered shops · 8–10 km");
+    }
+
+    function openShop(id) {
+      const shop = shops[id];
+      if (!shop) return;
+      if (stack[stack.length - 1] !== "shop") stack.push("shop");
+      shopHeading.textContent = shop.name;
+      shopMeta.textContent = `${shop.tag} · ${shop.items.length} items`;
+      shopItems.innerHTML = shop.items
+        .map(
+          (it) =>
+            `<div class="item"><div class="item-row"><span class="thumb" aria-hidden="true"></span><div><b>${it.n}</b><small>${it.p} · photo loads after text</small></div></div><span class="open">Add</span></div>`
+        )
+        .join("");
+      show("shop", "Kirana", "Nearby registered shops · 8–10 km");
+    }
+
+    document.querySelectorAll("[data-cat]").forEach((el) => {
+      el.addEventListener("click", () => openCat(el.dataset.cat));
+    });
+
+    document.getElementById("view-orders").addEventListener("click", (e) => {
+      const head = e.target.closest(".group-head");
+      if (head) head.parentElement.classList.toggle("open");
+    });
+
+    document.getElementById("view-cart").addEventListener("click", (e) => {
+      const head = e.target.closest(".group-head");
+      if (head) head.parentElement.classList.toggle("open");
+    });
+
+    document.querySelectorAll(".tabs [data-tab]").forEach((el) => {
+      el.addEventListener("click", () => {
+        const name = el.dataset.tab;
+        stack = [name];
+        const [t, s] = tabHeads[name];
+        show(name, t, s);
+      });
+    });
+
+    document.getElementById("view-home").addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-shop]");
+      if (btn) {
+        stack = ["home", "shop"];
+        openShop(btn.dataset.shop);
+      }
+    });
+
+    catShops.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-shop]");
+      if (btn) openShop(btn.dataset.shop);
+    });
+
+    itemSearch.addEventListener("input", () => renderCat(currentCat));
+
+    document.getElementById("offers").addEventListener("click", (e) => {
+      const chip = e.target.closest("[data-offer]");
+      if (!chip) return;
+      const key = chip.dataset.offer;
+      if (activeOffers.has(key)) activeOffers.delete(key);
+      else activeOffers.add(key);
+      syncOfferChips();
+      renderCat(currentCat);
+    });
+
+    offerClear.addEventListener("click", () => {
+      activeOffers.clear();
+      syncOfferChips();
+      renderCat(currentCat);
+    });
+
+    function goBack() {
+      if (stack.length <= 1) return;
+      stack.pop();
+      const prev = stack[stack.length - 1] || "home";
+      if (prev === "home") show("home", "Kirana", "Nearby registered shops · 8–10 km");
+      else if (prev === "cat") {
+        renderCat(currentCat);
+        show("cat", "Kirana", "Nearby registered shops · 8–10 km");
+      }
+    }
+
+    back.addEventListener("click", goBack);
+    document.getElementById("cat-back").addEventListener("click", goBack);
+    document.getElementById("shop-back").addEventListener("click", goBack);
+
+    const phone = document.querySelector(".phone");
+    let swipeX = 0;
+    phone.addEventListener("pointerdown", (e) => { swipeX = e.clientX; });
+    phone.addEventListener("pointerup", (e) => {
+      if (e.clientX - swipeX > 70) goBack();
+    });
+  </script>
+</body>
+</html>
